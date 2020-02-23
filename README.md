@@ -1,22 +1,20 @@
 # xymall
 
-> A Vue.js project
+> 一个vue+node+mongo，打造的简单电商平台
 
 ## Build Setup
 
 ``` bash
-# install dependencies
-npm install
+首先本地要有cnpm，不懂cnpm的自行百度
+# 安装依赖
+cnpm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+# 本地运行项目
+cnpm run dev
 
-# build for production with minification
-npm run build
+# 打包线上项目，产生dist文件
+cnpm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 # xymall
+有建议或bug请留言
