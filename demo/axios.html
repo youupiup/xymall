@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/axios/dist/axios.js"></script>
+</head>
+<body>
+<div id="app" class="container">
+  <h1>axios插件讲解</h1>
+  <a href="javascript:;" class="btn btn-primary" v-on:click="get">Get请求</a>
+  <a href="javascript:;" class="btn btn-primary" @click="post">Post请求</a>
+  <a href="javascript:;" class="btn btn-primary" @click="http">http</a>
+  <div>
+    <span>{{msg}}</span>
+  </div>
+</div>
+<script>
+  new Vue({
+    el:"#app",
+    data:{
+      msg:""
+    },
+    mounted:function(){
+      // 全局拦截
+      // 请求前
+      axios.interceptors.request.use(function (config) {
+        console.log("request init");
+        return config;
+      });
+      // 请求后
+      axios.interceptors.response.use(function (response) {
+        console.log("response init.");
+        return response;
+      })
+    },
+    methods:{
+      get:function(){
+        axios.get("../package.json",{
+          params:{
+            userId:"999"
+          },
+          headers:{
+            token:"jack"
+          }
+        }).then(res=>{
+          this.msg = res.data;
+        }).catch(function (error) {
+          console.log("err init"+error);
+        });
+      },
+      post:function () {
+        axios.post("../package.json",{
+          userId:"888"
+        },{
+          headers:{
+            token:"tom"
+          }
+        }).then(res=>{
+          this.msg = res.data;
+        })
+      },
+      http:function () {
+        axios({
+          url:"../package.json",
+          method:"post",
+          data:{
+            userId:"101",
+          },
+          headers:{
+            token:"http-test"
+          }
+        }).then(res=>{
+          this.msg = res.data;
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>

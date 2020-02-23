@@ -1,0 +1,24 @@
+{
+  "status": "0",
+  "msg": "",
+  "result": [
+    {
+      "productId": "100001",
+      "productName": "小米9",
+      "productPrice": 2499,
+      "productImg": "1.jpg"
+    },
+    {
+      "productId": "100002",
+      "productName": "小米8",
+      "productPrice": 3499,
+      "productImg": "2.jpg"
+    },
+    {
+      "productId": "100003",
+      "productName": "小米7",
+      "productPrice": 1499,
+      "productImg": "3.jpg"
+    }
+  ]
+}

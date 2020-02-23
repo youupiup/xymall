@@ -1,0 +1,4 @@
+#安装后台运行插件
+cnpm i pm2 -g
+#运行nodejs
+pm2 start /www/wwwroot/server/bin

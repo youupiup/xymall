@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vuex state</title>
+  <script src="../../node_modules/vue/dist/vue.js"></script>
+  <script src="../../node_modules/vuex/dist/vuex.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <h2>{{msg}}</h2>
+  <counter v-bind:count="count"></counter>
+</div>
+<script>
+  const counter = {
+    template:`
+      <div>{{count}}</div>
+    `,
+    props:['count']
+  };
+  const store = new Vuex.Store({
+    state:{
+      count:10
+    }
+  });
+  new Vue({
+    el:"#app",
+    // store,
+    data:{
+      count:15,
+      msg:'vuex的使用'
+    },
+    components:{
+      counter
+    }
+  });
+</script>
+</body>
+</html>

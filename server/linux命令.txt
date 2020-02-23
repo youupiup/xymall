@@ -1,0 +1,22 @@
+#pm2用法,看进程
+pm2 list
+#pm2重启
+pm2 restart
+#查看端口被谁占用
+lsof -i:4000
+#杀进程
+kill -9 4000
+1、查看firewall服务状态
+systemctl status firewalld
+#出现Active: active (running)切高亮显示则表示是启动状态。
+#出现 Active: inactive (dead)灰色表示停止，看单词也行。
+2、查看firewall的状态
+firewall-cmd --state
+# 查询端口是否开放
+firewall-cmd --query-port=8080/tcp
+# 开放80端口
+firewall-cmd --permanent --add-port=80/tcp
+# 移除端口
+firewall-cmd --permanent --remove-port=8080/tcp
+#重启防火墙(修改配置后要重启防火墙)
+firewall-cmd --reload
