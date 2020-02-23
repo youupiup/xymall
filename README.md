@@ -17,4 +17,4 @@ cnpm run build
 
 ```
 # xymall
-有建议或bug请留言
+有建议或bug请留言，邮箱1218298388@qq.com
