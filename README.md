@@ -1,6 +1,6 @@
 # xymall
 
-> 一个vue+node+mongo，打造的简单电商平台
+> 一个vue2.0+nodejs+mongo，打造的简单电商平台
 
 ## Build Setup
 
