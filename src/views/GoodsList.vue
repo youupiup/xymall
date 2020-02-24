@@ -30,7 +30,7 @@
                 <use xlink:href="#icon-arrow-short"></use>
               </svg>
             </a>
-            <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">排序</a>
+<!--            <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">排序</a>-->
           </div>
           <div class="accessory-result">
             <!-- filter -->

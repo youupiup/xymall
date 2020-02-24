@@ -118,7 +118,8 @@
 <!--            </div>-->
 <!--          </div>-->
           <div class="next-btn-wrap">
-            <router-link class="btn btn--m btn--red" v-bind:to="{path:'/orderConfirm',query:{'addressId':selectedAddrId}}">下一步</router-link>
+
+            <router-link class="btn btn--m btn--red" v-if="selectedAddrId!=''" v-bind:to="{path:'/orderConfirm',query:{'addressId':selectedAddrId}}">下一步</router-link>
           </div>
         </div>
       </div>
