@@ -61,10 +61,12 @@
             <div class="addr-list">
               <ul>
                 <li v-for="(item,index) in addressListFilter" v-bind:class="{'check':checkIndex==index}" @click="checkIndex=index;selectedAddrId=item.addressId">
-                  <dl>
-                    <dt>{{item.userName}}</dt>
-                    <dd class="address">{{item.streetName}}</dd>
-                    <dd class="tel">{{item.tel}}</dd>
+                  <dl class="text-left">
+                    <dt>收件人：{{item.userName}}</dt>
+                    <dd class="address">地址：{{item.streetName}}</dd>
+                    <dd class="tel">
+                      电话：{{item.tel}} | 邮编：{{item.postCode}}
+                    </dd>
                   </dl>
                   <div class="addr-opration addr-del">
                     <a href="javascript:;" class="addr-del-btn" @click="delAddressConfirm(item.addressId)">
@@ -76,8 +78,8 @@
                   </div>
                   <div class="addr-opration addr-default" v-if="item.isDefault">默认地址</div>
                 </li>
-                <li class="addr-new">
-                  <div class="add-new-inner">
+                <li class="addr-new" @click="addAddressShow">
+                  <div class="add-new-inner" >
                     <i class="icon-add">
                       <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
                     </i>
@@ -121,6 +123,43 @@
         </div>
       </div>
     </div>
+    <div class="md-modal modal-msg md-modal-transition" v-bind:class="{'md-show':isModalFlag}">
+      <div class="md-modal-inner">
+        <div class="md-top">
+          <div class="md-title">添加新地址</div>
+          <button class="md-close" @click="isModalFlag=false">关闭</button>
+        </div>
+        <div class="md-content">
+          <div class="confirm-tips">
+            <div class="error-wrap">
+              <span class="error error-show" v-show="errorTip">{{msgTip}}</span>
+            </div>
+            <ul>
+              <li class="regi_form_input">
+                <i class="icon IconPeople"></i>
+                <input type="text" tabindex="1" name="userName" v-model="userName" class="regi_login_input" placeholder="收件人">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconEmail"></i>
+                <input type="text" tabindex="2" name="streetName" v-model="streetName" class="regi_login_input" placeholder="详细地址">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconPhone"></i>
+                <input type="tel" tabindex="3" name="tel" v-model="tel" class="regi_login_input" placeholder="电话">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconEmail"></i>
+                <input type="number" tabindex="4" name="postCode" v-model="postCode" class="regi_login_input" @keyup.enter="addAddress" placeholder="邮编">
+              </li>
+            </ul>
+          </div>
+          <div class="login-wrap">
+            <a href="javascript:;" class="btn-login" @click="addAddress">添   加</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="md-overlay" v-if="isModalFlag" @click="isModalFlag=false"></div>
     <modal :mdShow="isMdShow" @close="closeModal">
       <p slot="message">
         确认删除地址？
@@ -136,6 +175,14 @@
       </p>
       <div slot="btnGroup">
         <a href="javascript:;" class="btn btn--m" @click="isMdShow2=false">明白</a>
+      </div>
+    </modal>
+    <modal :mdShow="isMdShow3" @close="isMdShow3=false">
+      <p slot="message">
+        添加地址成功
+      </p>
+      <div slot="btnGroup">
+        <a href="javascript:;" class="btn btn--m" @click="isMdShow3=false">确定</a>
       </div>
     </modal>
     <nav-footer></nav-footer>
@@ -158,7 +205,15 @@
           isMdShow:false,
           addressId:'',
           selectedAddrId:'',
-          isMdShow2:''
+          isMdShow2:false,
+          isMdShow3:false,
+          isModalFlag:false,
+          msgTip:'',
+          userName:'',
+          streetName:'',
+          postCode:'',
+          tel:'',
+          errorTip:false
       }
     },
     computed:{
@@ -226,6 +281,24 @@
         }else{
           this.isMdShow2 = true;
         }
+      },
+      addAddressShow(){
+        this.isModalFlag=true;
+      },
+      addAddress(){
+        axios.post("/users/addAddress",{
+          userName:this.userName,
+          streetName:this.streetName,
+          postCode:this.postCode,
+          tel:this.tel,
+        }).then((response)=>{
+          let res = response.data;
+          if(res.status=='0'){
+            this.init();
+            this.isModalFlag = false;
+            this.isMdShow3 = false;
+          }
+        });
       }
     }
   }

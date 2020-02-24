@@ -22,8 +22,8 @@
 
           <a href="javascript:void(0)" v-if="!nickName" class="navbar-link" @click="loginModalFlag=true">登录</a> <a
           href="javascript:void(0)" v-if="nickName" class="navbar-link" @click="logOut">退出</a>
-          <div class="navbar-cart-container"><span class="navbar-cart-count" v-if="cartCount>0">{{cartCount}}</span>
-            <a href="/#/cart" class="navbar-link navbar-cart-link">
+          <div class="navbar-cart-container" ><span class="navbar-cart-count" v-if="cartCount>0">{{cartCount}}</span>
+            <a href="/#/cart" class="navbar-link navbar-cart-link" >
               <svg class="navbar-cart-logo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
               </svg>
@@ -46,26 +46,70 @@
             <ul>
               <li class="regi_form_input">
                 <i class="icon IconPeople"></i>
-                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input">
+                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input" placeholder="用户名">
               </li>
               <li class="regi_form_input noMargin">
                 <i class="icon IconPwd"></i>
-                <input type="password" tabindex="2" name="password" v-model="userPwd" class="regi_login_input" @keyup.enter="login">
+                <input type="password" tabindex="2" name="password" v-model="userPwd" class="regi_login_input" @keyup.enter="login" placeholder="密码">
               </li>
             </ul>
           </div>
           <div class="login-wrap">
-            <a href="javacript:;" class="btn-login" @click="login">登   录</a>
+            <a href="javascript:;" class="btn-login" @click="login">登   录</a>
+            <a href="javascript:;" class="text-capitalize font-size-5x" @click="registerShow">没账号？去注册>></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="md-modal modal-msg md-modal-transition" v-bind:class="{'md-show':registerModalFlag}">
+      <div class="md-modal-inner">
+        <div class="md-top">
+          <div class="md-title">注   册</div>
+          <button class="md-close" @click="registerModalFlag=false">关闭</button>
+        </div>
+        <div class="md-content">
+          <div class="confirm-tips">
+            <div class="error-wrap">
+              <span class="error error-show" v-show="errorTip">{{msgTip}}</span>
+            </div>
+            <ul>
+              <li class="regi_form_input">
+                <i class="icon IconPeople"></i>
+                <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input" placeholder="新账户">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconPwd"></i>
+                <input type="password" tabindex="2" name="password" v-model="userPwd" class="regi_login_input" placeholder="新密码">
+              </li>
+              <li class="regi_form_input noMargin">
+                <i class="icon IconPwd"></i>
+                <input type="password" tabindex="3" name="userConfPwd" v-model="userConfPwd" class="regi_login_input" @keyup.enter="register" placeholder="再次输入密码">
+              </li>
+            </ul>
+          </div>
+          <div class="login-wrap">
+            <a href="javascript:;" class="btn-login" @click="register">注    册</a>
+            <a href="javascript:;" class="text-capitalize font-size-5x" @click="loginModalFlag=true;registerModalFlag=false">有账号？去登录>></a>
           </div>
         </div>
       </div>
     </div>
     <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false"></div>
+    <div class="md-overlay" v-if="registerModalFlag" @click="registerModalFlag=false"></div>
+    <modal :mdShow="isMdShow" @close="mdShow=false">
+      <p slot="message">
+        恭喜你，注册成功！
+      </p>
+      <div slot="btnGroup">
+        <a href="javascript:;" class="btn btn--m" @click="isMdShow=false">确定</a>
+      </div>
+    </modal>
   </header>
 </template>
 
 <script>
   import './../assets/css/login.css'
+  import Modal from "@/components/Modal.vue";
   import axios from 'axios'
   import {mapState} from 'vuex' //封装的函数，监听改变
   export default {
@@ -73,21 +117,39 @@
           return{
             userName:'',
             userPwd:'',
+            userConfPwd:'',
             errorTip:false,//错误信息显示
             loginModalFlag:false,//遮罩层显示
+            registerModalFlag:false,
+            isMdShow:false,
+            msgTip:''
           }
+        },
+        components:{
+          Modal
         },
         mounted() {
           this.checkLogin();
         },
         computed:{
-          ...mapState(['nickName','cartCount'])
-          /*nickName(){
-            return this.$store.state.nickName;
+          // ...mapState(['nickName','cartCount'])
+
+          nickName:{
+            // return this.$store.state.nickName;
+            get: function() {
+              // 获取当前路由
+              return this.$store.state.nickName;
+            },
+            set: function() {}
           },
-          cartCount(){
-            return this.$store.state.cartCount;
-          }*/
+          cartCount:{
+            // return this.$store.state.cartCount;
+            get: function() {
+              // 获取当前路由
+              return this.$store.state.cartCount;
+            },
+            set: function() {}
+          }
         },
         methods:{
           checkLogin(){
@@ -139,6 +201,42 @@
             axios.get("/users/getCartCount").then((response)=>{
               let res = response.data;
               this.$store.commit("initCartCount",res.result);
+            })
+          },
+          registerShow(){
+            this.registerModalFlag = true;
+            this.loginModalFlag = false;
+          },
+          register(){
+            if(!this.userName || !this.userPwd || !this.userConfPwd){
+              this.errorTip = true;
+              this.msgTip = '账户密码不能为空';
+              return;
+            }
+            if(this.userPwd != this.userConfPwd){
+              this.errorTip = true;
+              this.msgTip = '两次输入的密码不一致';
+              return;
+            }
+            if(this.userPwd.length<6){
+              this.errorTip = true;
+              this.msgTip = '密码至少6个字符';
+              return;
+            }
+            axios.post("/users/register",{
+              userName:this.userName,
+              userPwd:this.userPwd,
+              userConfPwd:this.userConfPwd
+            }).then((response)=>{
+              let res = response.data;
+              if(res.status == '0'){
+                this.isMdShow = true;
+                this.registerModalFlag=false;
+                this.checkLogin();
+              }else{
+                this.errorTip = true;
+                this.msgTip = res.msg;
+              }
             })
           }
         }

@@ -243,7 +243,7 @@
           let res = response.data;
           if(res.status=='0'){
             this.modalConfirm = false;
-            this.$store.commit("updateCartCount",-this.delItem.productId);
+            this.$store.commit("updateCartCount",-this.delItem.productNum);
             this.init();
           }
         });

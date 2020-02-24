@@ -66,10 +66,10 @@ router.get("/list",function (req,res,next) {
 
 // 加入购物车
 router.post("/addCart",function (req,res,next) {
-  var userId = '100000077',productId = req.body.productId;
   var User = require('../models/user');//获取相对应的模型
-
-  User.findOne({userId:userId},function (err,userDoc) {
+  var userId = req.cookies.userId,productId = req.body.productId;
+  userId = mongoose.Types.ObjectId(userId);
+  User.findOne({_id:userId},function (err,userDoc) {
     if(err){
       res.json({
         status:"1",

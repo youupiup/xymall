@@ -90,6 +90,12 @@ a {
   background-image: url("/static/icon.png");
   background-repeat: no-repeat;
 }
+.regi_form_input .IconPhone {
+  background-position: -95px 3px;
+}
+.regi_form_input .IconEmail {
+  background-position: -500px 8px;
+}
 .regi_form_input .IconPwd {
   background-position: -198px 3px;
 }
