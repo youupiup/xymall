@@ -194,6 +194,7 @@
               if(res.status=='0'){
                 this.$store.commit("updateUserInfo",'');
                 this.$store.commit("updateCartCount",-(this.cartCount));
+                this.$router.push("/").catch((data) => {});
               }
             })
           },
