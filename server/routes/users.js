@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var User = require('./../models/user');
-var mongoose = require('mongoose');
-require('./../util/util')
+var User = require('./../models/user');//引入数据库模板，进行数据库mongodb操作
+var mongoose = require('mongoose');//node.js异步环境下对mongodb进行便捷操作的对象模型工具
+require('./../util/util');//引入时间插件工具，基于Date().Format('yyyyMMddhhmmss')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -14,7 +14,7 @@ router.post("/login",function (req,res,next) {
     userName:req.body.userName,
     userPwd:req.body.userPwd
   }
-  User.findOne(param,function (err,doc) {
+  User.findOne(param,function (err,doc) {//查找数据库
     if(err){
       res.json({
         status:"1",
@@ -22,7 +22,7 @@ router.post("/login",function (req,res,next) {
       });
     }else{
       if(doc){
-        res.cookie("userId",doc.id,{
+        res.cookie("userId",doc.id,{//存到cookies，和有效期
           path:'/',
           maxAge:1000*60*60
         });
@@ -76,7 +76,7 @@ router.post("/register",function (req,res,next) {
           result:''
         })
       }else{
-        User.create(params,function (err1,doc1) {
+        User.create(params,function (err1,doc1) {//新建数据
           if(err1){
             res.json({
               status:'1',
@@ -167,10 +167,10 @@ router.get("/cartList",function (req,res,next) {
 router.post("/cartDel",function (req,res,next) {
   var userId = req.cookies.userId,productId = req.body.productId;
   userId = mongoose.Types.ObjectId(userId);
-  User.update({
+  User.update({//更新数据
     _id:userId
   },{
-    $pull:{
+    $pull:{//更新
       'cartList':{
         'productId':productId
       }
@@ -235,7 +235,7 @@ router.post("/editCheckAll",function (req,res,next) {
         user.cartList.forEach((item)=>{
           item.checked = checkAll;
         });
-        user.save(function (err1,doc) {
+        user.save(function (err1,doc) {//插入数据到数据库
           if(err1){
             res.json({
               status:'1',
@@ -421,7 +421,7 @@ router.post("/payMent",function (req,res,next) {
       var r1 = Math.floor(Math.random()*10);
       var r2 = Math.floor(Math.random()*10);
       var sysDate = new Date().Format('yyyyMMddhhmmss');
-      var createDate = new Date().Format('yyyy-MM-dd hh:mm:ss')
+      var createDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
       var orderId = platForm+r1+sysDate+r2;
       var order = {
         orderId:orderId,

@@ -125,12 +125,15 @@
             msgTip:''
           }
         },
+        // 引入模板，列入模板名
         components:{
           Modal
         },
+        // 页面载入先执行
         mounted() {
           this.checkLogin();
         },
+        // 监听参数改变，和vuex写法，全局改变
         computed:{
           // ...mapState(['nickName','cartCount'])
 
@@ -151,6 +154,7 @@
             set: function() {}
           }
         },
+        // 页面方法
         methods:{
           checkLogin(){
             axios.get("/users/checkLogin").then((response)=>{
@@ -158,11 +162,11 @@
               if(res.status=='0'){
                 this.nickName = res.result;
                 this.getCartCount();
-                this.$store.commit("updateUserInfo",res.result);
+                this.$store.commit("updateUserInfo",res.result);//提交改变参数到store
                 this.loginModalFlag = false;
               }else{
                 if(this.$route.path !="/goods"){
-                  this.$router.push("/").catch((data) => {});
+                  this.$router.push("/").catch((data) => {});//跳转页面
                 }
               }
             });

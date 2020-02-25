@@ -60,6 +60,7 @@
           <div class="addr-list-wrap">
             <div class="addr-list">
               <ul>
+<!--                控制class样式-->
                 <li v-for="(item,index) in addressListFilter" v-bind:class="{'check':checkIndex==index}" @click="checkIndex=index;selectedAddrId=item.addressId">
                   <dl class="text-left">
                     <dt>收件人：{{item.userName}}</dt>
@@ -118,7 +119,7 @@
 <!--            </div>-->
 <!--          </div>-->
           <div class="next-btn-wrap">
-
+<!--            页面跳转-->
             <router-link class="btn btn--m btn--red" v-if="selectedAddrId!=''" v-bind:to="{path:'/orderConfirm',query:{'addressId':selectedAddrId}}">下一步</router-link>
           </div>
         </div>
