@@ -1,3 +1,4 @@
+<!--弹出模态框组件-->
 <template>
     <div>
       <div class="md-modal modal-msg md-modal-transition" v-bind:class="{'md-show':mdShow}">
@@ -8,6 +9,7 @@
           </div>
           <div class="md-content">
             <div class="confirm-tips">
+<!--              插槽，指定名字进行绑定数据-->
               <slot name="message"></slot>
             </div>
             <div class="btn-wrap">
@@ -22,13 +24,13 @@
 
 <script>
     export default {
-        props:['mdShow'],
+        props:['mdShow'],//获取父组件的参数
         data(){
           return{}
         },
         methods:{
           closeModal(){
-            this.$emit("close");
+            this.$emit("close");//传输参数到父组件
           }
         }
     }

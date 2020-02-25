@@ -10,4 +10,4 @@ var produtSchema = new Schema({
   "productNum":Number,
 });
 
-module.exports = mongoose.model('Good',produtSchema);
+module.exports = mongoose.model('Good',produtSchema);//自动补充s，进行数据库的查找

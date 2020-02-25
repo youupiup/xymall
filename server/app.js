@@ -1,28 +1,29 @@
 var createError = require('http-errors');
-var express = require('express');
+var express = require('express');//nodejs的框架
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var logger = require('morgan');//日志组件
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var goods = require('./routes/goods');
+var indexRouter = require('./routes/index');//引入路由
+var usersRouter = require('./routes/users');//引入路由
+var goods = require('./routes/goods');//引入路由
 
-var ejs = require('ejs');
-var app = express();
+var ejs = require('ejs');//模板引擎
+var app = express();//使用express
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.engine('.html',ejs.__express);
-app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));//前端可视目录
+app.engine('.html',ejs.__express);//模板引擎，前端文件后缀
+app.set('view engine', 'html');//html模板，可换
 
-app.use(logger('dev'));
-app.use(express.json());
+app.use(logger('dev'));//日志操作
+app.use(express.json());//通过json数据传输到前端
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'views')));//静态资源目录
 
+//载入路由的前进行是否登录校验
 app.use(function (req,res,next) {
   if(req.cookies.userId){
     next();
@@ -37,9 +38,9 @@ app.use(function (req,res,next) {
       });
     }
   }
-})
+});
 
-app.use('/', indexRouter);
+app.use('/', indexRouter);//访问/跳index路由
 app.use('/users', usersRouter);
 app.use('/goods', goods);
 
